@@ -237,7 +237,9 @@ int main()
 
 
 
-	int m1[2][100]; int** Mat1; int** Mat2; int** Mat3;  int MAX = 0;
+	int m1[2][100]; int** Mat1; int** Mat2; int** Mat3;  int MAX = 0, poft = 0,  y = 0;
+	int m2[100], Mpoft[100]; int m5[100];
+
 	cout << " 2)  Обьединение/Пересечение матриц Mat1 и Mat2 в матрицу Mat3" << endl;
 	cout << "    Введите размер матрицы Mat1" << endl;
 	cin >> n;
@@ -246,7 +248,6 @@ int main()
 	for (int i = 0; i < n; i++)
 	{
 		cin >> m1[0][i];
-		if (m1[0][i] > MAX)MAX = m1[0][i];
 	}
 	Mat1 = (int**)malloc(n * sizeof(int));
 
@@ -262,7 +263,7 @@ int main()
 	for (int i = 0; i < m; i++)
 	{
 		cin >> m1[1][i];
-		if (m1[1][i] > MAX)MAX = m1[1][i];
+
 	}
 	Mat2 = (int**)malloc(m * sizeof(int));
 
@@ -270,15 +271,72 @@ int main()
 	{
 		Mat2[i] = (int*)malloc(m * sizeof(int));
 	}
+
+	int chet = 0;
+
+	
+		for (int i = 0; i < n; i++)
+		{
+		
+			for (int j = 0; j < m; j++)
+			{
+				if (m1[0][i] == m1[1][j]) 
+				{
+					poft++; Mpoft[y] = m1[1][j]; y++; break;
+				}
+				
+				
+
+			}
+			
+			
+		}
+		bool key = true;
+		for (int i = 0; i < n; i++)
+		{
+			key = true;
+			for (int j = 0; j < y; j++)
+			{
+				if (m1[0][i] == Mpoft[j])
+				{
+					key = false;
+				}
+			}
+			if (key)
+			{
+				m5[chet] = m1[0][i];
+				chet++;
+			}
+		}
+		for (int i = 0; i < m; i++)
+		{
+			key = true;
+			for (int j = 0; j < y; j++)
+			{
+				if (m1[1][i] == Mpoft[j])
+				{
+					key = false;
+				}
+			}
+			if (key)
+			{
+				m5[chet] = m1[1][i];
+				chet++;
+			}
+		}
+		MAX = n +m - poft;
+		int nepoft = (n - poft) + (m - poft);
+
+	
+
+	
 	Mat3 = (int**)malloc(MAX * sizeof(int));
 
 	for (int i = 0; i < MAX; i++)
 	{
 		Mat3[i] = (int*)malloc(MAX * sizeof(int));
 	}
-	cout << endl;
-	//	cout << MAX << " " << n << " " << m;
-		//cout << endl;
+
 
 	for (int i = 0; i < MAX; i++)
 	{
@@ -303,9 +361,73 @@ int main()
 			Mat3[j][i] = 0;
 		}
 	}
-	cout << "   Матрица Mat1:" << endl;
+
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = i + 1; j < n; j++)
+		{
+			if (m1[0][j] < m1[0][i])
+			{
+				int tmp = m1[0][j];
+				m1[0][j] = m1[0][i];
+				m1[0][i] = tmp;
+			}
+		}
+	}
+
+	for (int i = 0; i < m - 1; i++)
+	{
+		for (int j = i + 1; j < m; j++)
+		{
+			if (m1[1][j] < m1[1][i])
+			{
+				int tmp = m1[1][j];
+				m1[1][j] = m1[1][i];
+				m1[1][i] = tmp;
+			}
+		}
+	}
+
+
 	for (int i = 0; i < n; i++)
 	{
+		m2[i] = m1[0][i];
+	}
+	int Size = n;
+	for (int i = 0; i < m; i++)
+	{
+		int u = 0;
+
+		for (int j = 0; j < Size; j++)
+		{
+			if (m2[j] != m1[1][i])
+			{
+				u++;
+			}
+		}
+		if (u == Size) {
+			m2[Size] = m1[1][i];
+			Size++;
+		}
+	}
+	for (int i = 0; i < MAX - 1; i++)
+		for (int j = i + 1; j < MAX; j++)
+			if (m2[j] < m2[i])
+			{
+				int tmp = m2[j];
+				m2[j] = m2[i];
+				m2[i] = tmp;
+			}
+
+
+
+	cout << "   Матрица Mat1:" << endl;
+	cout << " ";
+	for (int i = 0; i < n; i++)cout << "  " << m1[0][i];
+	cout << endl;
+	for (int i = 0; i < n; i++)
+	{
+		cout << m1[0][i];
 		for (int j = 0; j < n; j++)
 		{
 			cout << "  " << Mat1[i][j];
@@ -313,13 +435,20 @@ int main()
 	}
 	cout << endl;
 	cout << "   Матрица Mat2:" << endl;
+	cout << " ";
+	for (int i = 0; i < m; i++)cout << "  " << m1[1][i];
+	cout << endl;
 	for (int i = 0; i < m; i++)
 	{
+		cout << m1[1][i];
 		for (int j = 0; j < m; j++)
 		{
 			cout << "  " << Mat2[i][j];
 		}cout << endl;
 	}cout << endl;
+
+
+	cout << endl;
 	/*for (int i = 0; i < n; i++)
 	{
 		cout << " " << m1[0][i];
@@ -327,131 +456,202 @@ int main()
 	for (int i = 0; i < m; i++)
 	{
 		cout << " " << m1[1][i];
-	}cout << endl;*/
-
-	for (int i = 0; i < n; i++)
+	}cout << endl;
+	for (int i = 0; i < MAX; i++)
 	{
-		for (int j = 0; j < n; j++)
-		{
-			int t = m1[0][i] - 1;
-			Mat3[t][j] = Mat1[i][j];
-
-		}
-	}
-	for (int i = 0; i < m; i++)
-	{
-		for (int j = 0; j < m; j++)
-		{
-			int t = m1[1][i] - 1;
-			if (Mat3[t][j] == 0)
-			{
-				Mat3[t][j] = Mat2[i][j];
-			}
-		}
-	}
+		cout << " " << m2[i];
+	}cout << endl;
+	*/
 
 	cout << "Объединение матриц\n";
 
-	for (int i = 0; i < MAX; i++)
-	{
-		for (int j = 0; j < MAX; j++)
-		{
-			cout << " " << Mat3[i][j];
-		}cout << endl;
-	}
-
-	for (int i = 0; i < MAX; i++)
-	{
-		for (int j = 0; j < MAX; j++)
-		{
-			Mat3[i][j] = 0;
-		}cout << endl;
-	}
-
-	for (int i = 0; i < n; i++)
+	int Q = 0;
+	for (int i=0;i<MAX;i++)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			int t = m1[0][i] - 1;
-			Mat3[t][j] = Mat1[i][j];
-
+			if (m2[i] == m1[0][j])Q = j;
+		}
+		for (int r = 0; r < n; r++)
+		{
+			if (i < n)
+			{
+				Mat3[r][i] = Mat1[r][Q];
+				Mat3[i][r] = Mat1[Q][r];
+			}
 		}
 	}
-	for (int i = 0; i < m; i++)
+	
+	for (int i = 0; i < MAX; i++)
 	{
 		for (int j = 0; j < m; j++)
 		{
-			int t = m1[1][i] - 1;
-			if (Mat3[t][j] == 1)
+			if (m2[i] == m1[1][j])Q = j;
+		}
+		if (Q != -100)
+		{
+			for (int r = 0; r < m; r++)
 			{
-				Mat3[t][j] = Mat2[i][j];
+
+				if (Mat3[r][i] != 1)
+				{
+					Mat3[r][i] = Mat2[r][Q];
+					Mat3[i][r] = Mat2[Q][r];
+				}
+				if (r == i)Mat3[i][r] = 0;
+
 			}
 		}
+		Q = -100;
 	}
+	cout << endl;
+	cout << endl;
+	cout << "   Матрица Mat3:" << endl;
+	cout << " ";
+	for (int i = 0; i < MAX; i++)cout << "  " << m2[i];
+	cout << endl;
+	for (int i = 0; i < MAX; i++)
+	{
+		cout << m2[i];
+		for (int j = 0; j < MAX; j++)
+		{
+			cout << "  " << Mat3[i][j];
+		}cout << endl;
+	}
+   
+	cout << endl; cout << endl;
 	cout << "Пересечение матриц\n";
+	int** Mat4;
+	Mat4 = (int**)malloc(y * sizeof(int));
 
-	for (int i = 0; i < MAX; i++)
+	for (int i = 0; i < y; i++)
 	{
-		for (int j = 0; j < MAX; j++)
-		{
-			cout << " " << Mat3[i][j];
-		}cout << endl;
+		Mat4[i] = (int*)malloc(y * sizeof(int));
 	}
-
-	for (int i = 0; i < MAX; i++)
+	int Y = 0;
+	for (int i = 0; i < y; i++)
 	{
-		for (int j = 0; j < MAX; j++)
+		for (int j = 0; j < n; j++)
 		{
-			Mat3[i][j] = 0;
-		}cout << endl;
+			if (m1[0][j] == Mpoft[i]) { Y = j; }
+		}
+		for (int r = 0; r < y; r++)
+		{	
+				Mat4[r][i] = Mat1[r][Y];
+				Mat4[i][r] = Mat1[Y][r];
+		}
+
 	}
-
-	if (n > m) {
-
-		for (int i = 0; i < n; i++)
+	for (int i = 0; i < y; i++)
+	{
+		for (int j = 0; j < m; j++)
 		{
-			for (int j = 0; j < n; j++)
+			if (Mpoft[i] == m1[1][j])Y = j;
+		}
+		if (Y != -100)
+		{
+			for (int r = 0; r < y; r++)
 			{
-				Mat3[i][j] = Mat1[i][j];
 
-				if (j < m && i < m && Mat1[i][j] != Mat2[i][j]) {
-
-					Mat3[i][j] = 1;
+				if (Mat4[r][i] != 1)
+				{
+					Mat4[r][i] = Mat2[r][Y];
+					Mat4[i][r] = Mat2[Y][r];
 				}
+				if (r == i)Mat4[i][r] = 0;
 
-				if (j < m && i < m && Mat1[i][j] == Mat2[i][j]) {
-					Mat3[i][j] = 0;
-				}
+			}
+		}
+		Y = -100;
+	}
+
+	cout << "   Матрица Mat4:" << endl;
+	cout << " ";
+	for (int i = 0; i < y; i++)cout << "  " << Mpoft[i];
+	cout << endl;
+	for (int i = 0; i < y; i++)
+	{
+		cout << Mpoft[i];
+		for (int j = 0; j < y; j++)
+		{
+			cout << "  " << Mat4[i][j];
+		}cout << endl;
+	}
+	cout << endl; cout << endl;
+	cout << "Кольцевая сумма матриц Mat6 и Mat7 в матрицу Mat8\n";
+	cout << "Введите размер матриц" << endl;
+	cin >> N; int** Mat6, ** Mat7, ** Mat8;
+	Mat6 = (int**)malloc(N * sizeof(int));
+	Mat7 = (int**)malloc(N * sizeof(int));
+	Mat8 = (int**)malloc(N * sizeof(int));
+	for (int i = 0; i < N; i++)
+	{
+		Mat6[i] = (int*)malloc(N * sizeof(int));
+		Mat7[i] = (int*)malloc(N * sizeof(int));
+		Mat8[i] = (int*)malloc(N * sizeof(int));
+	}
+	for (int i = 0; i < N; i++)
+	{
+		
+		for (int j = 0; j < N; j++)
+		{
+			int temp1, temp2;
+			temp1 = rand() % 2;
+			temp2 = rand() % 2;
+			Mat6[i][j] = temp1;
+			Mat6[j][i] = temp1;
+			Mat7[i][j] = temp2;
+			Mat7[j][i] = temp2;
+
+			if (i == j)
+			{
+				Mat6[i][j] = 0;
+				Mat7[i][j] = 0;
+			}
+			Mat8[i][j] = 0;
+		}
+	}
+	cout << " Матрица Mat6:" << endl;
+	cout << endl;
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			cout << "  " << Mat6[i][j];
+		}cout << endl;
+	}cout << " Матрица Mat7:" << endl;
+	cout << endl;
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			cout << "  " << Mat7[i][j];
+		}cout << endl;
+	}
+
+
+
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			if (Mat6[i][j] != Mat7[i][j] && i != j) {
+				if (Mat6[i][j] == 1)Mat8[i][j] = Mat6[i][j];
+				if (Mat7[i][j] == 1)Mat8[i][j] = Mat7[i][j];
 			}
 		}
 	}
-	else {
-		for (int i = 0; i < m; i++)
-		{
-			for (int j = 0; j < m; j++)
-			{
-				Mat3[i][j] = Mat2[i][j];
-
-				if (j < n && i < n && Mat1[i][j] != Mat2[i][j]) {
-
-					Mat3[i][j] = 1;
-				}
-
-				if (j < n && i < n && Mat1[i][j] == Mat2[i][j]) {
-					Mat3[i][j] = 0;
-				}
-			}
-		}
-	}
-	cout << "Кольцевая сумма\n";
-
-	for (int i = 0; i < MAX; i++)
+	cout << " Матрица Mat8:" << endl;
+	cout << endl;
+	for (int i = 0; i < N; i++)
 	{
-		for (int j = 0; j < MAX; j++)
+		for (int j = 0; j < N; j++)
 		{
-			cout << " " << Mat3[i][j];
+			cout << "  " << Mat8[i][j];
 		}cout << endl;
 	}
+
+
 
 }
 
